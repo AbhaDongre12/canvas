@@ -1,0 +1,6 @@
+body{background-color:pink;padding:30px}
+h1{text-align:center;color:blue;font-family:times-new-roman;font-style:italics}
+#clearcanvas{background-color:beige;color:red;text-align:center}
+#savecanvas{background-color:lime;padding:15px;text-align:center}
+#addtext{background-color:red;color:white;text-align:center}
+#drawcanvas{background-color:white;height:400px;width:1000px}

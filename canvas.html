@@ -1,0 +1,79 @@
+<!doctype html>
+<head>
+<meta charset="UTF-8">
+<title>AI-powered Drawing Board</title>
+<link rel="stylesheet" href="design.css">
+</head>
+<body>
+<h1>Drawing Board</h1>
+<input type="color" id="colorpicker" title="Choose a color" oninput="strokecolor(event)">
+<input type="range" id="strokesize" min="1" max="50" value="5" title="Choose thickness of stroke" oninput="strokesize(event)"><br>
+<button id="clearcanvas">Clear Canvas</button>
+<button id="savecanvas" onclick="save()">Save Canvas</button>
+<button id="addtext" onclick="add()">Add text</button><br>
+<canvas id="drawcanvas"></canvas>
+<script type="text/JavaScript">
+const canvas=document.getElementById("drawcanvas");
+const context=canvas.getContext('2d');
+let isDrawing = false;
+let brushcolor = "#000000";
+let brushsize = 5;
+canvas.width= window.innerWidth*0.8;
+canvas.height=window.innerHeight*0.5;
+canvas.addEventListener("mousedown", startDrawing);
+canvas.addEventListener("mousemove", draw);
+canvas.addEventListener("mouseup", stopDrawing);
+canvas.addEventListener("mouseout", stopDrawing);
+function strokecolor(event)
+{
+brushcolor = event.target.value;
+}
+function strokesize(event)
+{
+brushsize=event.target.value;
+}
+document.getElementById("clearcanvas").addEventListener("click", () => {
+  context.clearRect(0, 0, canvas.width, canvas.height);
+});
+function save()
+{
+const dataURL = canvas.toDataURL();
+const link = document.createElement("a");
+link.href = dataURL;
+link.download = "drawing.png";
+link.click();
+}
+function add ()
+{
+const text=prompt("Enter the text you want to add");
+if (text) 
+{
+context.font = "30px Arial";
+context.fillStyle = brushcolor;
+context.fillText(text, 100, 100);
+}
+}
+function startDrawing(event)
+{
+isDrawing=true;
+context.beginPath();
+context.moveTo(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
+}
+function draw(event) 
+{
+if (!isDrawing) return;
+context.lineWidth = brushsize;
+context.lineCap = "round";
+context.lineTo(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
+context.strokeStyle = brushcolor;
+context.stroke();
+context.moveTo(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
+}
+function stopDrawing(event) 
+{
+isDrawing = false;
+context.beginPath();
+}
+</script>
+</body>
+</html>
